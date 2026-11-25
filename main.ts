@@ -10,8 +10,10 @@ const outDir = process.env.MAKEFUN_OUTPUT_DIR ?? "/output";
 
 // Self-check against the competition gate: 1 to 200 characters, not
 // only whitespace. Fail loudly instead of writing an invalid entry.
-if (LINE.length < 1 || LINE.length > 200 || LINE.trim().length === 0) {
-  throw new Error(`entry.txt would be invalid: ${LINE.length} characters`);
+// Count Unicode code points, not UTF-16 units, to match the gate.
+const lineLen = [...LINE].length;
+if (lineLen < 1 || lineLen > 200 || LINE.trim().length === 0) {
+  throw new Error(`entry.txt would be invalid: ${lineLen} characters`);
 }
 
 mkdirSync(outDir, { recursive: true });
